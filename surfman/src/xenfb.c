@@ -282,6 +282,8 @@ xenfb_connect (xen_device_t xendev)
   struct xenfb2_page *page;
   int fd;
 
+  surfman_error("in xenfb_connect");
+
   fd = backend_bind_evtchn (fb->back, fb->devid);
   if (fd < 0)
     return -1;
@@ -356,6 +358,7 @@ xenfb_disconnect (xen_device_t xendev)
   struct xenfb_framebuffer *fb = xendev;
 
   xenfb_framebuffer_cleanup (fb);
+  surfman_error("finished xenfb_disconnect");
 }
 
 static void
@@ -393,11 +396,13 @@ xenfb_free (xen_device_t xendev)
   struct xenfb_framebuffer *fb = xendev;
   struct xenfb_device *dev = fb->dev;
 
+  surfman_error("in xenfb_free");
   xenfb_framebuffer_cleanup (fb);
 
   dev->framebuffers[fb->devid] = NULL;
   surface_destroy (fb->s);
   free (fb);
+  surfman_error("finished xenfb_free");
 }
 
 static struct xen_backend_ops xenfb_backend_ops = {
